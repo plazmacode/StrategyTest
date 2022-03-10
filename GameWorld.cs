@@ -12,8 +12,14 @@ namespace StrategyTest
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private static Texture2D pixel;
         private static SpriteFont arial;
         private static GameTime gameTime;
+
+        private static MouseState mouseState;
+        private static MouseState oldMouseState;
+        private static KeyboardState keyState;
+        private static KeyboardState oldKeyState;
 
         private static GameState currentGameState;
 
@@ -31,6 +37,12 @@ namespace StrategyTest
         public static SpriteFont Arial { get => arial; set => arial = value; }
         public static GameTime GameTimeProp { get => gameTime; set => gameTime = value; }
         public static GameState CurrentGameState { get => currentGameState; set => currentGameState = value; }
+        public static Texture2D Pixel { get => pixel; set => pixel = value; }
+        public static KeyboardState KeyStateProp { get => keyState; set => keyState = value; }
+        public static KeyboardState OldKeyState { get => oldKeyState; set => oldKeyState = value; }
+        public static MouseState MouseStateProp { get => mouseState; set => mouseState = value; }
+        public static MouseState OldMouseState { get => oldMouseState; set => oldMouseState = value; }
+        public static float ZoomScale { get => zoomScale; set => zoomScale = value; }
 
         public GameWorld()
         {
@@ -47,6 +59,8 @@ namespace StrategyTest
         {
             OldScreenSize = screenSize;
             screenSize = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+            MapManager.OnResize();
+            MenuManager.OnResize();
         }
 
 
@@ -54,7 +68,12 @@ namespace StrategyTest
         {
             CurrentGameState = GameState.Play;
             Arial = Content.Load<SpriteFont>("arial");
+            pixel = Content.Load<Texture2D>("pixel");
             cameraPosition = Vector2.Zero;
+            zoomScale = 1f;
+
+            MenuManager.LoadMenus();
+            MapManager.CreateMap();
 
             base.Initialize();
         }
@@ -71,25 +90,67 @@ namespace StrategyTest
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             GameTimeProp = gameTime;
+            MouseStateProp = Mouse.GetState();
+            KeyStateProp = Keyboard.GetState();
 
+            InputManager.Update();
+            MapManager.Update();
+            MenuManager.Update();
+
+            OldMouseState = MouseStateProp;
+            OldKeyState = KeyStateProp;
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Gray);
             _spriteBatch.Begin(SpriteSortMode.FrontToBack);
+
+            foreach (Province province in MapManager.Map.Values)
+            {
+                province.Draw(_spriteBatch);
+            }
+            Vector2 gameStatePosition = new Vector2(screenSize.X / 2 - Arial.MeasureString(currentGameState.ToString()).X, 0);
+            _spriteBatch.DrawString(Arial, currentGameState.ToString(), gameStatePosition, Color.White, 0, default, 2f, SpriteEffects.None, 0.9f);
+
+            foreach (Menu menu in MenuManager.MenuList)
+            {
+                menu.Draw(_spriteBatch);
+            }
+
+            DrawMapBoundary(MapManager.MapRect);
+
             //Draw extra debug texts
             for (int i = 0; i < DebugTexts.Count; i++)
             {
-                _spriteBatch.DrawString(Arial, DebugTexts[i], new Vector2(0, 240 + i * 24), Color.DarkRed, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.9f);
+                _spriteBatch.DrawString(Arial, DebugTexts[i], new Vector2(0, 240 + i * 24), Color.Red, 0, default, 2f, SpriteEffects.None, 0.9f);
             }
             DebugTexts.Clear();
 
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void DrawMapBoundary(Rectangle rect)
+        {
+            int lineWidth = 5;
+            Color color = Color.DarkGray;
+
+            //rect.X = rect.X + (int)CameraPosition.X;
+            //rect.Y = rect.Y + (int)CameraPosition.Y;
+
+            Rectangle topLine = new Rectangle(rect.X - lineWidth, rect.Y - lineWidth, rect.Width + lineWidth * 2, lineWidth);
+            Rectangle bottomLine = new Rectangle(rect.X, rect.Y + rect.Height, rect.Width, lineWidth);
+            Rectangle rightLine = new Rectangle(rect.X + rect.Width, rect.Y, lineWidth, rect.Height + lineWidth);
+            Rectangle leftLine = new Rectangle(rect.X - lineWidth, rect.Y, lineWidth, rect.Height + lineWidth);
+
+            _spriteBatch.Draw(pixel, topLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
+            _spriteBatch.Draw(pixel, bottomLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
+            _spriteBatch.Draw(pixel, rightLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
+            _spriteBatch.Draw(pixel, leftLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
         }
     }
 }
