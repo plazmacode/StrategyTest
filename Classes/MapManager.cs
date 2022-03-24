@@ -66,9 +66,9 @@ namespace StrategyTest
         {
             if (GameWorld.MouseStateProp.LeftButton == ButtonState.Released && GameWorld.OldMouseState.LeftButton == ButtonState.Pressed)
             {
-                if (!MenuManager.PlayAbleAreaClicked())
+                if (!UIManager.PlayAbleAreaClicked())
                 {
-                    MenuManager.OnResize();
+                    UIManager.OnResize();
                     //MenuManager.MenuList.Clear(); //Faster but some menus will be hidden until called again
                 }
             }

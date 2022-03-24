@@ -60,7 +60,7 @@ namespace StrategyTest
             OldScreenSize = screenSize;
             screenSize = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
             MapManager.OnResize();
-            MenuManager.OnResize();
+            UIManager.OnResize();
         }
 
 
@@ -72,7 +72,7 @@ namespace StrategyTest
             cameraPosition = Vector2.Zero;
             zoomScale = 1f;
 
-            MenuManager.LoadMenus();
+            UIManager.LoadMenus();
             MapManager.CreateMap();
 
             base.Initialize();
@@ -95,7 +95,12 @@ namespace StrategyTest
 
             InputManager.Update();
             MapManager.Update();
-            MenuManager.Update();
+            UIManager.Update();
+
+            if (currentGameState == GameState.Play)
+            {
+                TimeManager.AdvanceTime();
+            }
 
             OldMouseState = MouseStateProp;
             OldKeyState = KeyStateProp;
@@ -115,7 +120,7 @@ namespace StrategyTest
             Vector2 gameStatePosition = new Vector2(screenSize.X / 2 - Arial.MeasureString(currentGameState.ToString()).X, 0);
             _spriteBatch.DrawString(Arial, currentGameState.ToString(), gameStatePosition, Color.White, 0, default, 2f, SpriteEffects.None, 0.9f);
 
-            foreach (Menu menu in MenuManager.MenuList)
+            foreach (UIArea menu in UIManager.UIListProp)
             {
                 menu.Draw(_spriteBatch);
             }

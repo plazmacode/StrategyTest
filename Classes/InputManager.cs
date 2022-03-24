@@ -6,6 +6,9 @@ using System.Text;
 
 namespace StrategyTest
 {
+    /// <summary>
+    /// Handles the user input
+    /// </summary>
     static class InputManager
     {
         private static Vector2 draggingPosition;
@@ -30,6 +33,13 @@ namespace StrategyTest
 
         private static void GameInput()
         {
+            //Keys[] keyArray = new Keys[Keyboard.GetState().GetPressedKeyCount()];
+            //Keyboard.GetState().GetPressedKeys(keyArray);
+            //for (int i = 0; i < keyArray.Length; i++)
+            //{
+            //    GameWorld.DebugTexts.Add("Keypressed: " + keyArray[i]);
+            //}
+            //Pause ingame time
             if (ButtonPressed(Keys.Space))
             {
                 if (GameWorld.CurrentGameState == GameState.Play)
@@ -40,10 +50,24 @@ namespace StrategyTest
                     GameWorld.CurrentGameState = GameState.Play;
                 }
             }
+
+            //Increase ingame time speed
+            if (ButtonPressed(Keys.Add) || ButtonPressed(Keys.OemPlus))
+            {
+                TimeManager.ChangeGameSpeed("up");
+            }
+
+            //Decrease ingame time speed
+            if (ButtonPressed(Keys.Subtract) || ButtonPressed(Keys.OemMinus))
+            {
+                TimeManager.ChangeGameSpeed("down");
+            }
         }
 
         /// <summary>
         /// Check if key is down, while it was up last frame
+        /// <para>Runs code once when key is down</para>
+        /// <para>Does not run code on button release, but on the button press</para>
         /// </summary>
         /// <param name="key">Key Input</param>
         /// <returns></returns>
@@ -65,7 +89,7 @@ namespace StrategyTest
             void UpdateOffset()
             {
                 MapManager.OnResize();
-                MenuManager.OnResize();
+                UIManager.OnResize();
             }
             if (GameWorld.MouseStateProp.ScrollWheelValue > GameWorld.OldMouseState.ScrollWheelValue)
             {

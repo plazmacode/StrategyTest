@@ -104,9 +104,9 @@ namespace StrategyTest
             MapManager.SelectedProvince = this;
             if (GameWorld.CurrentGameState == GameState.Choose)
             {
-                Menu current;
-                MenuManager.MenuDictionary.TryGetValue("chooseNationMenu", out current);
-                MenuManager.ShowMenu(current);
+                UIElement current;
+                UIManager.UIDictionaryProp.TryGetValue("chooseNationMenu", out current);
+                UIManager.ShowMenu(current);
             }
         }
 

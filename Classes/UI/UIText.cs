@@ -6,30 +6,23 @@ using System.Text;
 
 namespace StrategyTest
 {
-    class MenuText
+    class UIText : UIElement
     {
         private string name;
         private string text;
-        private Vector2 position;
         private Color color;
-        private float layer;
-        private float scale;
-
 
         public string Text { get => text; set => text = value; }
         public float Layer { get => layer; set => layer = value; }
         public string Name { get => name; set => name = value; }
-        public float Scale { get => scale; set => scale = value; }
 
-        public MenuText(string text, Vector2 position, Color color)
+        public UIText(string text, Vector2 position, Color color, float layer) : base(position, GameWorld.Arial.MeasureString(text), color, layer)
         {
             this.text = text;
-            this.position = position;
-            this.color = color;
             Scale = 1;
         }
 
-        public void Update()
+        public override void Update()
         {
             if (Name == "timeText")
             {
@@ -37,9 +30,13 @@ namespace StrategyTest
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        /// <summary>
+        /// Draws the text
+        /// </summary>
+        /// <param name="spriteBatch">spriteBatch reference for drawing sprites</param>
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(GameWorld.Arial, text, position, color, default, default, Scale, SpriteEffects.None, Layer);
+            spriteBatch.DrawString(GameWorld.Arial, text, Position, Background, default, default, Scale, SpriteEffects.None, layer);
         }
     }
 }
