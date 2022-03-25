@@ -8,13 +8,11 @@ namespace StrategyTest
 {
     class UIText : UIElement
     {
-        private string name;
         private string text;
         private Color color;
 
         public string Text { get => text; set => text = value; }
         public float Layer { get => layer; set => layer = value; }
-        public string Name { get => name; set => name = value; }
 
         public UIText(string text, Vector2 position, Color color, float layer) : base(position, GameWorld.Arial.MeasureString(text), color, layer)
         {
@@ -27,6 +25,14 @@ namespace StrategyTest
             if (Name == "timeText")
             {
                 text = TimeManager.CurrentTime("normal");
+            }
+            if (Name == "provinceName")
+            {
+                text = MapManager.SelectedProvince.Name;
+            }
+            if (Name == "provincePopulation")
+            {
+                text = "Population: " + MapManager.SelectedProvince.Resources.Population.ToString();
             }
         }
 

@@ -16,6 +16,7 @@ namespace StrategyTest
         private static Vector2 oldOffset;
         private static int provinceSize;
         private static Province selectedProvince;
+        private static Dictionary<string, Player> playerDictionary = new Dictionary<string, Player>();
         private static Player selectedNation;
 
         static MapManager()
@@ -25,10 +26,11 @@ namespace StrategyTest
         }
 
         public static Vector2 Offset { get => offset; set => offset = value; }
-        internal static Dictionary<Vector2, Province> Map { get => map; set => map = value; }
-        internal static Province SelectedProvince { get => selectedProvince; set => selectedProvince = value; }
+        public static Dictionary<Vector2, Province> Map { get => map; set => map = value; }
+        public static Province SelectedProvince { get => selectedProvince; set => selectedProvince = value; }
         public static Rectangle MapRect { get => mapRect; set => mapRect = value; }
-        internal static Player SelectedNation { get => selectedNation; set => selectedNation = value; }
+        public static Player SelectedNation { get => selectedNation; set => selectedNation = value; }
+        public static Dictionary<string, Player> PlayerDictionary { get => playerDictionary; set => playerDictionary = value; }
 
         public static void OnResize()
         {
@@ -72,13 +74,19 @@ namespace StrategyTest
                     //MenuManager.MenuList.Clear(); //Faster but some menus will be hidden until called again
                 }
             }
+
+            //Provinces are still updated while paused, because they only update visuals
+            //For the AI, resource handling etc. see the Player or timeManager class
+            foreach (Province province in Map.Values)
+            {
+                province.Update(GameWorld.GameTimeProp);
+            }
+
             if (GameWorld.CurrentGameState == GameState.Play || GameWorld.CurrentGameState == GameState.Choose)
             {
-                foreach (Province province in Map.Values)
-                {
-                    province.Update(GameWorld.GameTimeProp);
-                }
+                //Insert code that only executes when the game is in play or choose state
             }
+
         }
     }
 }

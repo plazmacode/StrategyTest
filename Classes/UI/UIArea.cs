@@ -15,7 +15,7 @@ namespace StrategyTest
         public Rectangle Rect { get => rect; set => rect = value; }
         public Dictionary<string, UIElement> SubUIElements { get => subUIElements; set => subUIElements = value; }
 
-        public UIArea(Vector2 position, Color background, Vector2 size, float layer) : base(position, size, background, layer)
+        public UIArea(Vector2 position, Vector2 size, Color background,  float layer) : base(position, size, background, layer)
         {
             Rect = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
         }

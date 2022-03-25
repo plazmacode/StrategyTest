@@ -117,7 +117,7 @@ namespace StrategyTest
             {
                 province.Draw(_spriteBatch);
             }
-            Vector2 gameStatePosition = new Vector2(screenSize.X / 2 - Arial.MeasureString(currentGameState.ToString()).X, 0);
+            Vector2 gameStatePosition = new Vector2(screenSize.X -500 - Arial.MeasureString(currentGameState.ToString()).X, 0);
             _spriteBatch.DrawString(Arial, currentGameState.ToString(), gameStatePosition, Color.White, 0, default, 2f, SpriteEffects.None, 0.9f);
 
             foreach (UIArea menu in UIManager.UIListProp)

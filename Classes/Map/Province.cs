@@ -19,6 +19,7 @@ namespace StrategyTest
         private int borderThickness;
         private string name;
         private Player owner;
+        private ProvinceResources resources;
 
         private Rectangle topLine;
         private Rectangle bottomLine;
@@ -31,11 +32,25 @@ namespace StrategyTest
         public Rectangle BottomLine { get => bottomLine; set => bottomLine = value; }
         public Rectangle RightLine { get => rightLine; set => rightLine = value; }
         public Rectangle LeftLine { get => leftLine; set => leftLine = value; }
+
+        /// <summary>
+        /// The name of the province
+        /// </summary>
         public string Name { get => name; set => name = value; }
+
+        /// <summary>
+        /// The player that owns the province
+        /// </summary>
         public Player Owner { get => owner; set => owner = value; }
+
+        /// <summary>
+        /// The resources that are in the province
+        /// </summary>
+        public ProvinceResources Resources { get => resources; set => resources = value; }
 
         public Province(Vector2 position, int provinceSize)
         {
+            resources = new ProvinceResources();
             this.Position = position;
             borderThickness = 3;
             layer = 0.3f;
@@ -44,6 +59,7 @@ namespace StrategyTest
             edgeColor = Color.Black;
             provinceColor = Color.White;
             SetRectangles();
+            GenerateName();
         }
 
         public void UpdateOwner(Player owner)
@@ -102,10 +118,18 @@ namespace StrategyTest
         private void OnClick()
         {
             MapManager.SelectedProvince = this;
+            UIElement current;
+            //Select province start on choose nation menu
             if (GameWorld.CurrentGameState == GameState.Choose)
             {
-                UIElement current;
                 UIManager.UIDictionaryProp.TryGetValue("chooseNationMenu", out current);
+                UIManager.ShowMenu(current);
+            }
+
+            //Select province when game has started
+            if (GameWorld.CurrentGameState != GameState.Choose && GameWorld.CurrentGameState != GameState.BuildingMap)
+            {
+                UIManager.UIDictionaryProp.TryGetValue("provinceMenu", out current);
                 UIManager.ShowMenu(current);
             }
         }

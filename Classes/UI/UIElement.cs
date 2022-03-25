@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace StrategyTest
@@ -20,6 +23,7 @@ namespace StrategyTest
         protected float layer;
         protected Texture2D sprite;
         protected float scale;
+        protected string name;
 
         /// <summary>
         /// Property for easier access of position
@@ -35,7 +39,12 @@ namespace StrategyTest
         /// Property to change color of UIelements after creation. Used in UpdateUI() method
         /// </summary>
         public Color Background { get => background; set => background = value; }
+
+        /// <summary>
+        /// The parent of the UIElement, used when an element is a part of a UIArea
+        /// </summary>
         public UIElement Parent { get => parent; set => parent = value; }
+        public string Name { get => name; set => name = value; }
 
         /// <summary>
         /// Constructor for creating UI with texture. This is on the abstract class.

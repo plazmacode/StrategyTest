@@ -85,7 +85,6 @@ namespace StrategyTest
 
         private static void CameraInput()
         {
-            GameWorld.DebugTexts.Add(GameWorld.ZoomScale.ToString());
             void UpdateOffset()
             {
                 MapManager.OnResize();

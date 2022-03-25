@@ -27,19 +27,23 @@ namespace StrategyTest
 
         public static void LoadMenus()
         {
-            UIArea chooseNationMenu = new UIArea(new Vector2(0, 0), new Color(0, 10, 60), new Vector2(400, GameWorld.ScreenSize.Y), 0.5f);
+            Color menuBlue = new Color(0, 10, 60);
+
+            //Choose nation
+            UIArea chooseNationMenu = new UIArea(new Vector2(0, 200), new Vector2(400, GameWorld.ScreenSize.Y-200), menuBlue, 0.5f);
             UIButton redNationButton = new UIButton(new Vector2(150,50), new Vector2(50,50), new Color(255,0,0), 0.51f, "chooseRedNation");
-            UIButton chooseNationButton = new UIButton(new Vector2(20, GameWorld.ScreenSize.Y-150), new Vector2(360, 50), new Color(0, 30, 90), 0.51f, "chooseNation");
+            UIButton chooseNationButton = new UIButton(new Vector2(20, GameWorld.ScreenSize.Y-300), new Vector2(360, 50), new Color(0, 30, 90), 0.51f, "chooseNation");
             chooseNationButton.ButtonText = "Choose Nation";
             chooseNationMenu.SubUIElements.Add("chooseNationButton", chooseNationButton);
             chooseNationMenu.SubUIElements.Add("redNationButton", redNationButton);
 
+            UIDictionaryProp.Add("chooseNationMenu", chooseNationMenu);
+            //UI after game has started
             if (GameWorld.CurrentGameState != GameState.BuildingMap || GameWorld.CurrentGameState != GameState.Choose)
             {
                 //Load menus that are always shown(time etc.)
-                UIArea timeMenu = new UIArea(new Vector2(GameWorld.ScreenSize.X - 300, 0), new Color(0, 10, 60), new Vector2(300, 100), 0.6f);
-                UIText timeText = new UIText(TimeManager.CurrentTime("normal"), Vector2.Zero, Color.White, 0.61f) {Scale=2f };
-                timeText.Name = "timeText";
+                UIArea timeMenu = new UIArea(new Vector2(GameWorld.ScreenSize.X - 300, 0), new Vector2(300, 100), menuBlue, 0.6f);
+                UIText timeText = new UIText(TimeManager.CurrentTime("normal"), Vector2.Zero, Color.White, 0.61f) { Name = "timeText", Scale = 2f };
                 timeMenu.SubUIElements.Add("timeText", timeText);
                 //timeMenu.SetTextValues();
 
@@ -51,10 +55,21 @@ namespace StrategyTest
                 timeMenu.SubUIElements.Add("speedUp", speedUp);
                 timeMenu.SubUIElements.Add("speedDown", speedDown);
                 UIList.Add(timeMenu);
+
+                UIArea topMenu = new UIArea(new Vector2(0,0), new Vector2(GameWorld.ScreenSize.X - 600, 100), menuBlue, 0.5f);
+                UIList.Add(topMenu);
+
+                UIArea provinceMenu = new UIArea(new Vector2(0, 200), new Vector2(500, GameWorld.ScreenSize.Y - 200), menuBlue, 0.5f);
+                UIText provinceName = new UIText("NullName", new Vector2(10, 10), Color.White, 0.51f) { Name = "provinceName", Scale = 1.5f };
+                UIText provincePopulation = new UIText("Population: NullPopulation", new Vector2(5, 40), Color.White, 0.51f) { Name = "provincePopulation"};
+                
+                UIPlot populationPlot = new UIPlot(new Vector2(5, 60), new Vector2(300, 300), Color.White, 0.51f) { Name = "populationPlot" };
+                provinceMenu.SubUIElements.Add("provinceName", provinceName);
+                provinceMenu.SubUIElements.Add("provincePopulation", provincePopulation);
+                provinceMenu.SubUIElements.Add("populationPlot", populationPlot);
+
+                UIDictionaryProp.Add("provinceMenu", provinceMenu);
             }
-
-            UIDictionaryProp.Add("chooseNationMenu", chooseNationMenu);
-
 
             //Update parent values on UIElements that are under a UIArea
             //Also set position relative to parent
@@ -105,9 +120,13 @@ namespace StrategyTest
 
             if (action == "chooseNation")
             {
+                //Maybe move this to MapManager
                 if (MapManager.SelectedNation != null)
                 {
                     MapManager.SelectedProvince.UpdateOwner(MapManager.SelectedNation);
+                    MapManager.SelectedProvince.Resources.Population += 1000; //Capitals get extra 1000 population, maybe move this to province class
+                    MapManager.SelectedNation.OwnedProvinces.Add(MapManager.SelectedProvince.Position,MapManager.SelectedProvince);
+                    MapManager.PlayerDictionary.Add("player", MapManager.SelectedNation);
                     GameWorld.CurrentGameState = GameState.Pause;
                     removeUIList.AddRange(UIList);
                 }
@@ -150,15 +169,15 @@ namespace StrategyTest
         public static void Update()
         {
             UIList.AddRange(addUIList);
-            foreach (UIArea menu in removeUIList)
+            foreach (UIElement uiElement in removeUIList)
             {
-                UIList.Remove(menu);
+                UIList.Remove(uiElement);
             }
             addUIList.Clear();
             removeUIList.Clear();
-            foreach (UIArea menu in UIListProp)
+            foreach (UIElement uiElement in UIListProp)
             {
-                menu.Update();
+                uiElement.Update();
             }
         }
     }

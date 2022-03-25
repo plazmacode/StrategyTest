@@ -29,7 +29,7 @@ namespace StrategyTest
         {
             currentDay = 1;
             currentMonth = 1;
-            totalDays = 0;
+            TotalDays = 0;
             totalMonths = 0;
             years = 1;
             GameSpeed = 1;
@@ -39,6 +39,7 @@ namespace StrategyTest
         /// Value between 1-5 to adjust gamespeed(how fast time passes)
         /// </summary>
         public static int GameSpeed { get => gameSpeed; set => gameSpeed = value; }
+        public static int TotalDays { get => totalDays; set => totalDays = value; }
 
         public static void ChangeGameSpeed(string input)
         {
@@ -66,7 +67,6 @@ namespace StrategyTest
         {
             //gamespeed is in a switch case so the values can be custom instead of linear or logarithmic
             //This might be subject to change
-            GameWorld.DebugTexts.Add(GameSpeed.ToString());
             double timeStep = 150; //how often the time will advance in milliseconds
             double currentTime = GameWorld.GameTimeProp.TotalGameTime.TotalMilliseconds;
             switch (gameSpeed)
@@ -75,35 +75,35 @@ namespace StrategyTest
                     if (currentTime > (lastTimeStep + timeStep))
                     {
                         lastTimeStep = currentTime;
-                        UpdateDate();
+                        DailyTick();
                     }
                     break;
                 case 2:
-                    if (currentTime > (lastTimeStep + timeStep / 1.5f))
+                    if (currentTime > (lastTimeStep + timeStep / 2))
                     {
                         lastTimeStep = currentTime;
-                        UpdateDate();
+                        DailyTick();
                     }
                     break;
                 case 3:
-                    if (currentTime > (lastTimeStep + timeStep / 3))
-                    {
-                        lastTimeStep = currentTime;
-                        UpdateDate();
-                    }
-                    break;
-                case 4:
                     if (currentTime > (lastTimeStep + timeStep / 5))
                     {
                         lastTimeStep = currentTime;
-                        UpdateDate();
+                        DailyTick();
                     }
                     break;
-                case 5:
+                case 4:
                     if (currentTime > (lastTimeStep + timeStep / 8))
                     {
                         lastTimeStep = currentTime;
-                        UpdateDate();
+                        DailyTick();
+                    }
+                    break;
+                case 5:
+                    if (currentTime > (lastTimeStep + timeStep / 16))
+                    {
+                        lastTimeStep = currentTime;
+                        DailyTick();
                     }
                     break;
                 default:
@@ -112,17 +112,39 @@ namespace StrategyTest
         }
 
         /// <summary>
+        /// The daily tick
+        /// </summary>
+        private static void DailyTick()
+        {
+            UpdateDate();
+            foreach (Player player in MapManager.PlayerDictionary.Values)
+            {
+                player.DailyUpdate();
+            }
+        }
+
+
+        private static void MonthlyTick()
+        {
+            foreach (Player player in MapManager.PlayerDictionary.Values)
+            {
+                player.MonthlyUpdate();
+            }
+        }
+
+        /// <summary>
         /// Updates current day, month year to match correctly
         /// </summary>
         private static void UpdateDate()
         {
-            years = 1 + totalDays / 365;
-            totalDays++;
+            years = 1 + TotalDays / 365;
+            TotalDays++;
             currentDay++;
             if (currentDay > daysInMonthArray[currentMonth-1])
             {
                 currentDay = 1;
                 currentMonth++;
+                MonthlyTick();
             }
             if (currentMonth > 12)
             {
@@ -138,7 +160,7 @@ namespace StrategyTest
         {
             if (format == "day")
             {
-                return totalDays.ToString();
+                return TotalDays.ToString();
             }
             if (format == "normal")
             {
