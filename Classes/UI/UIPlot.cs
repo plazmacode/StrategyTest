@@ -18,8 +18,19 @@ namespace StrategyTest
         private Vector2 largestNumber;
         private Vector2 smallestNumber;
         private Vector2 plotRange;
+        private string labelX, labelY;
+
+
+        string[] xAxisText = new string[4] { "", "", "", "" };
+        int[] xAxisTextPosition = new int[4];
+        string[] yAxisText = new string[4] { "", "", "", "" };
+        int[] yAxisTextPosition = new int[4];
+
+        float pointSize = 5;
 
         public List<Vector2> DataList { get => dataList; set => dataList = value; }
+        public string LabelX { get => labelX; set => labelX = value; }
+        public string LabelY { get => labelY; set => labelY = value; }
 
         public UIPlot(Vector2 position, Vector2 size, Color backgroundColor, float layer) : base(position, size, backgroundColor, layer)
         {
@@ -37,22 +48,55 @@ namespace StrategyTest
             FindPlotRange();
             float scaleX = size.X / plotRange.X;
             float scaleY = size.Y / plotRange.Y;
-            //if (float.IsInfinity(scaleX))
-            //{
-            //    scaleX = 0.2f;
-            //}
-            //if (float.IsInfinity(scaleY))
-            //{
-            //    scaleY = 0.2f;
-            //}
+
             for (int i = 0; i < DataList.Count; i++)
             {
-                float pointSize = 5;
                 float x = (dataList[i].X - smallestNumber.X) * scaleX;
                 float y = (dataList[i].Y - smallestNumber.Y) * scaleY;
                 Vector2 dataPosition = new Vector2(position.X + x, position.Y + size.Y - y - pointSize);
                 spriteBatch.Draw(GameWorld.Pixel, dataPosition, null, Color.Red, default, default, pointSize, SpriteEffects.None, layer+0.01f); //Datapoint
+
+                if (i == (dataList.Count-1) * 0.25)
+                {
+                    xAxisText[0] = ((1 + Math.Floor(dataList[i].X / 365)) * 0.25).ToString();
+                    xAxisTextPosition[0] = (int)dataPosition.X;
+                    yAxisTextPosition[0] = (int)dataPosition.Y;
+                    yAxisText[0] = NumberFormatter.K10Number(dataList[i].Y);
+                }
+
+                if (i == (dataList.Count - 1) * 0.5)
+                {
+                    xAxisText[1] = ((1 + Math.Floor(dataList[i].X / 365)) * 0.5).ToString();
+                    xAxisTextPosition[1] = (int)dataPosition.X;
+                    yAxisTextPosition[1] = (int)dataPosition.Y;
+                    yAxisText[1] = NumberFormatter.K10Number(dataList[i].Y);
+                }
+
+                if (i == (dataList.Count - 1) * 0.75)
+                {
+                    xAxisText[2] = ((1 + Math.Floor(dataList[i].X / 365)) * 0.75).ToString();
+                    xAxisTextPosition[2] = (int)dataPosition.X;
+                    yAxisTextPosition[2] = (int)dataPosition.Y;
+                    yAxisText[2] = NumberFormatter.K10Number(dataList[i].Y);
+                }
+
+                if (i == dataList.Count-1)
+                {
+                    xAxisText[3] = (1 + Math.Floor(dataList[i].X / 365)).ToString();
+                    xAxisTextPosition[3] = (int)dataPosition.X;
+                    yAxisTextPosition[3] = (int)dataPosition.Y;
+                    yAxisText[3] = NumberFormatter.K10Number(dataList[i].Y);
+                }                
             }
+            spriteBatch.DrawString(GameWorld.Arial, xAxisText[0], new Vector2(xAxisTextPosition[0], position.Y + size.Y + 10), Color.White, default, default, 1, SpriteEffects.None, layer + 0.01f);
+            spriteBatch.DrawString(GameWorld.Arial, xAxisText[1], new Vector2(xAxisTextPosition[1], position.Y + size.Y + 10), Color.White, default, default, 1, SpriteEffects.None, layer + 0.01f);
+            spriteBatch.DrawString(GameWorld.Arial, xAxisText[2], new Vector2(xAxisTextPosition[2], position.Y + size.Y + 10), Color.White, default, default, 1, SpriteEffects.None, layer + 0.01f);
+            spriteBatch.DrawString(GameWorld.Arial, xAxisText[3] + "years", new Vector2(position.X + size.X, position.Y + size.Y + 10), Color.White, default, default, 1, SpriteEffects.None, layer + 0.01f);
+
+            spriteBatch.DrawString(GameWorld.Arial, yAxisText[0], new Vector2(position.X + size.X + 10, yAxisTextPosition[0]), Color.White, default, default, 1, SpriteEffects.None, layer + 0.01f);
+            spriteBatch.DrawString(GameWorld.Arial, yAxisText[1], new Vector2(position.X + size.X + 10, yAxisTextPosition[1]), Color.White, default, default, 1, SpriteEffects.None, layer + 0.01f);
+            spriteBatch.DrawString(GameWorld.Arial, yAxisText[2], new Vector2(position.X + size.X + 10, yAxisTextPosition[2]), Color.White, default, default, 1, SpriteEffects.None, layer + 0.01f);
+            spriteBatch.DrawString(GameWorld.Arial, yAxisText[3] + " people", new Vector2(position.X + size.X + 10, position.Y), Color.White, default, default, 1, SpriteEffects.None, layer + 0.01f);
         }
 
         /// <summary>

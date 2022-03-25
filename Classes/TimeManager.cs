@@ -29,9 +29,9 @@ namespace StrategyTest
         {
             currentDay = 1;
             currentMonth = 1;
-            TotalDays = 0;
-            totalMonths = 0;
-            years = 1;
+            TotalDays = 1;
+            totalMonths = 1;
+            Years = 1;
             GameSpeed = 1;
         }
 
@@ -40,6 +40,7 @@ namespace StrategyTest
         /// </summary>
         public static int GameSpeed { get => gameSpeed; set => gameSpeed = value; }
         public static int TotalDays { get => totalDays; set => totalDays = value; }
+        public static int Years { get => years; set => years = value; }
 
         public static void ChangeGameSpeed(string input)
         {
@@ -137,7 +138,7 @@ namespace StrategyTest
         /// </summary>
         private static void UpdateDate()
         {
-            years = 1 + TotalDays / 365;
+            Years = 1 + TotalDays / 365;
             TotalDays++;
             currentDay++;
             if (currentDay > daysInMonthArray[currentMonth-1])
@@ -164,7 +165,7 @@ namespace StrategyTest
             }
             if (format == "normal")
             {
-                string returnString = String.Format("{0}. {1} {2}", currentDay, monthArray[currentMonth-1], years);
+                string returnString = String.Format("{0}. {1} {2}", currentDay, monthArray[currentMonth-1], Years);
                 return returnString;
             }
             throw new Exception("wrong format");

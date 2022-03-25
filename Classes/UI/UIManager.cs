@@ -57,6 +57,10 @@ namespace StrategyTest
                 UIList.Add(timeMenu);
 
                 UIArea topMenu = new UIArea(new Vector2(0,0), new Vector2(GameWorld.ScreenSize.X - 600, 100), menuBlue, 0.5f);
+                UIText totalPopulation = new UIText("Pop: nullPop", new Vector2(10, 10), Color.White, 0.51f) { Name = "totalPopulation" };
+                UIText cashText = new UIText("Cash: 0$", new Vector2(120, 10), Color.White, 0.51f) { Name = "cashText" };
+                topMenu.SubUIElements.Add("totalPopulation", totalPopulation);
+                topMenu.SubUIElements.Add("cashText", cashText);
                 UIList.Add(topMenu);
 
                 UIArea provinceMenu = new UIArea(new Vector2(0, 200), new Vector2(500, GameWorld.ScreenSize.Y - 200), menuBlue, 0.5f);

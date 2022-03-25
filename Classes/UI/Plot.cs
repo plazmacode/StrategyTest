@@ -8,7 +8,16 @@ namespace StrategyTest
     class Plot
     {
         private List<Vector2> dataList = new List<Vector2>();
+        private int maxPoints;
+        private Random random;
+
         public List<Vector2> DataList { get => dataList; set => dataList = value; }
+
+        public Plot()
+        {
+            maxPoints = 100;
+            random = new Random();
+        }
 
         /// <summary>
         /// Updates the content of the graph
@@ -25,15 +34,15 @@ namespace StrategyTest
         /// </summary>
         private void Optimise()
         {
-            if (dataList.Count > 100)
+            if (dataList.Count > maxPoints)
             {
-                //Remove every odd datapoint
-                for (int i = 0; i < dataList.Count; i++)
+                for (int i = 0; i < maxPoints/14; i++)
                 {
-                    if (i % 2 == 0)
-                    {
-                        dataList.RemoveAt(i);
-                    }
+                    dataList.RemoveAt(random.Next(1, dataList.Count-1));
+                }
+                for (int i = 0; i < maxPoints/7; i++)
+                {
+                    dataList.RemoveAt(random.Next(dataList.Count/2, dataList.Count-1));
                 }
             }
         }

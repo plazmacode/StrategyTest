@@ -88,7 +88,7 @@ namespace StrategyTest
             void UpdateOffset()
             {
                 MapManager.OnResize();
-                UIManager.OnResize();
+                //UIManager.OnResize();
             }
             if (GameWorld.MouseStateProp.ScrollWheelValue > GameWorld.OldMouseState.ScrollWheelValue)
             {

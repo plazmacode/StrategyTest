@@ -9,9 +9,13 @@ namespace StrategyTest
     /// </summary>
     class PlayerResources
     {
-        private int cash;
+        private float cash;
+        private int population;
+        private int manpower;
 
-        public int Cash { get => cash; set => cash = value; }
+        public float Cash { get => cash; set => cash = value; }
+        public int Population { get => population; set => population = value; }
+
 
         /// <summary>
         /// Adds resources to the player, based on the amount of resources in the province.
@@ -19,7 +23,16 @@ namespace StrategyTest
         /// <param name="province"></param>
         public void AddResources(Province province)
         {
-            Cash += province.Resources.Population;
+            Population += province.Resources.Population;
+            Cash += province.Resources.Population / 1000;
+        }
+
+        /// <summary>
+        /// Resets some values so the statistics can be found
+        /// </summary>
+        public void SetStatistics()
+        {
+            Population = 0;
         }
     }
 }

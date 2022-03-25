@@ -22,6 +22,7 @@ namespace StrategyTest
 
         public override void Update()
         {
+            Player currentPlayer;
             if (Name == "timeText")
             {
                 text = TimeManager.CurrentTime("normal");
@@ -34,8 +35,20 @@ namespace StrategyTest
             {
                 text = "Population: " + MapManager.SelectedProvince.Resources.Population.ToString();
             }
-        }
 
+            if (GameWorld.CurrentGameState != GameState.Choose)
+            {
+                MapManager.PlayerDictionary.TryGetValue("player", out currentPlayer);
+                if (Name == "totalPopulation")
+                {
+                    text = NumberFormatter.KNumber(currentPlayer.Resources.Population);
+                }
+                if (Name == "cashText")
+                {
+                    text = NumberFormatter.KNumber(currentPlayer.Resources.Cash) + "$";
+                }
+            }
+        }
         /// <summary>
         /// Draws the text
         /// </summary>

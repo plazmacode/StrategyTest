@@ -33,10 +33,18 @@ namespace StrategyTest
         /// </summary>
         public void Update()
         {
-            if (random.Next(0, 100) <= 5)
+            //2% chance to get 1 more population for early growth
+            if (random.Next(0, 100) <= 1)
             {
-                population += 1 * population / 1000;
+                population++;
             }
+
+            //0.5% chance to get 1/100th population extra
+            if (random.Next(0,1000) <= 5)
+            {
+                population += population / 100;
+            }
+
         }
     }
 }

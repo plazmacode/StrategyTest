@@ -17,7 +17,7 @@ namespace StrategyTest
 
         public Player(bool AI)
         {
-            resources = new PlayerResources();
+            Resources = new PlayerResources();
             this.AI = AI;
             IsAlive = true;
             if (AI)
@@ -35,6 +35,11 @@ namespace StrategyTest
         /// A Dictionary of the provinces that a player owns.
         /// </summary>
         public Dictionary<Vector2, Province> OwnedProvinces { get => ownedProvinces; set => ownedProvinces = value; }
+
+        /// <summary>
+        /// The amount of resources the player has
+        /// </summary>
+        public PlayerResources Resources { get => resources; set => resources = value; }
 
         private void AIBehaviour()
         {
@@ -54,7 +59,8 @@ namespace StrategyTest
         {
             foreach (Province province in OwnedProvinces.Values)
             {
-                resources.AddResources(province);
+                Resources.SetStatistics();
+                Resources.AddResources(province);
                 province.Resources.Update();
             }
         }
