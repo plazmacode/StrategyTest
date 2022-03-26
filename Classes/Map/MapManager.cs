@@ -64,6 +64,17 @@ namespace StrategyTest
             GameWorld.CurrentGameState = GameState.Choose;
         }
 
+        public static void YearlyTick()
+        {
+            foreach (Province province in map.Values)
+            {
+                if (province.Owner == null)
+                {
+                    province.Resources.AddWildPopulation();
+                }
+            }
+        }
+
         public static void Update()
         {
             if (GameWorld.MouseStateProp.LeftButton == ButtonState.Released && GameWorld.OldMouseState.LeftButton == ButtonState.Pressed)

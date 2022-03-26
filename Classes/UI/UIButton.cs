@@ -56,13 +56,13 @@ namespace StrategyTest
         {
             if (sprite != null)
             {
-                rect = new Rectangle((int)position.X, (int)position.Y, (int)sprite.Width * (int)scale, (int)sprite.Height * (int)scale);
+                Rect = new Rectangle((int)position.X, (int)position.Y, (int)sprite.Width * (int)scale, (int)sprite.Height * (int)scale);
             }
         }
 
         public override void Update()
         {
-            if (rect.Contains(GameWorld.MouseStateProp.Position) && GameWorld.MouseStateProp.LeftButton == ButtonState.Pressed && GameWorld.OldMouseState.LeftButton == ButtonState.Released)
+            if (Rect.Contains(GameWorld.MouseStateProp.Position) && GameWorld.MouseStateProp.LeftButton == ButtonState.Pressed && GameWorld.OldMouseState.LeftButton == ButtonState.Released)
             {
                 OnClick();
             }
@@ -77,7 +77,7 @@ namespace StrategyTest
         {
             if (sprite == null)
             {
-                spriteBatch.Draw(GameWorld.Sprites["pixel"], rect, null, Background, default, default, SpriteEffects.None, layer);
+                spriteBatch.Draw(GameWorld.Sprites["pixel"], Rect, null, Background, default, default, SpriteEffects.None, layer);
             }
             else
             {

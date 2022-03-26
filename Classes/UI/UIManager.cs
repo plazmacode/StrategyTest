@@ -66,8 +66,8 @@ namespace StrategyTest
                 UIArea provinceMenu = new UIArea(new Vector2(0, 200), new Vector2(500, GameWorld.ScreenSize.Y - 200), menuBlue, 0.5f);
                 UIText provinceName = new UIText("NullName", new Vector2(10, 10), Color.White, 0.51f) { Name = "provinceName", Scale = 1.5f };
                 UIText provincePopulation = new UIText("Population: NullPopulation", new Vector2(5, 40), Color.White, 0.51f) { Name = "provincePopulation"};
-                UIPlot populationPlot = new UIPlot(provinceMenu.Position + new Vector2(10, provinceMenu.Size.Y - 340), new Vector2(300, 300), Color.White, 0.51f) { Name = "populationPlot" };
-                UIPlotButton provincePopulationPlotButton = new UIPlotButton(new Vector2(200, 20), GameWorld.Sprites["plot"], 0.51f, populationPlot);                
+                UIPlot populationPlot = new UIPlot(provinceMenu.Position + new Vector2(10, provinceMenu.Size.Y - 340), new Vector2(300, 300), Color.White, 0.52f) { Name = "populationPlot" };
+                UIPlotButton provincePopulationPlotButton = new UIPlotButton(new Vector2(200, 20), GameWorld.Sprites["plot"], 0.52f, populationPlot);                
                 provinceMenu.SubUIElements.Add("provinceName", provinceName);
                 provinceMenu.SubUIElements.Add("provincePopulation", provincePopulation);
                 provinceMenu.SubUIElements.Add("provincePopulationPlotButton", provincePopulationPlotButton);

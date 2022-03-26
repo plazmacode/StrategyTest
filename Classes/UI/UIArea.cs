@@ -11,7 +11,7 @@ namespace StrategyTest
     {
         private Dictionary<string, UIElement> subUIElements = new Dictionary<string, UIElement>();
 
-        public Rectangle Rect { get => rect; set => rect = value; }
+        public Rectangle Rect { get => base.Rect; set => base.Rect = value; }
         public Dictionary<string, UIElement> SubUIElements { get => subUIElements; set => subUIElements = value; }
 
         public UIArea(Vector2 position, Vector2 size, Color background,  float layer) : base(position, size, background, layer)

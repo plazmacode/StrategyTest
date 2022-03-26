@@ -10,8 +10,8 @@ namespace StrategyTest
 
     public class GameWorld : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
         private static Texture2D pixel;
         private static SpriteFont arial;
         private static GameTime gameTime;
@@ -48,19 +48,19 @@ namespace StrategyTest
 
         public GameWorld()
         {
-            _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = 1600;
-            _graphics.PreferredBackBufferHeight = 900;
+            graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1600;
+            graphics.PreferredBackBufferHeight = 900;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            ScreenSize = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+            ScreenSize = new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
             Window.AllowUserResizing = true;
             Window.ClientSizeChanged += OnResize;
         }
         public void OnResize(Object sender, EventArgs e)
         {
             OldScreenSize = screenSize;
-            screenSize = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+            screenSize = new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
             MapManager.OnResize();
             UIManager.OnResize();
         }
@@ -69,10 +69,12 @@ namespace StrategyTest
         protected override void Initialize()
         {
             CurrentGameState = GameState.Play;
-            Arial = Content.Load<SpriteFont>("arial");
 
+            Arial = Content.Load<SpriteFont>("arial");
             Sprites.Add("pixel", Content.Load<Texture2D>("pixel"));
             Sprites.Add("plot", Content.Load<Texture2D>("plot"));
+            Sprites.Add("fullscreen", Content.Load<Texture2D>("fullscreen"));
+
 
             cameraPosition = Vector2.Zero;
             zoomScale = 1f;
@@ -85,7 +87,7 @@ namespace StrategyTest
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
         }
@@ -116,18 +118,18 @@ namespace StrategyTest
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Gray);
-            _spriteBatch.Begin(SpriteSortMode.FrontToBack);
+            spriteBatch.Begin(SpriteSortMode.FrontToBack);
 
             foreach (Province province in MapManager.Map.Values)
             {
-                province.Draw(_spriteBatch);
+                province.Draw(spriteBatch);
             }
             Vector2 gameStatePosition = new Vector2(screenSize.X -500 - Arial.MeasureString(currentGameState.ToString()).X, 0);
-            _spriteBatch.DrawString(Arial, currentGameState.ToString(), gameStatePosition, Color.White, 0, default, 2f, SpriteEffects.None, 0.9f);
+            spriteBatch.DrawString(Arial, currentGameState.ToString(), gameStatePosition, Color.White, 0, default, 2f, SpriteEffects.None, 0.9f);
 
             foreach (UIArea menu in UIManager.UIListProp)
             {
-                menu.Draw(_spriteBatch);
+                menu.Draw(spriteBatch);
             }
 
             DrawMapBoundary(MapManager.MapRect);
@@ -135,11 +137,11 @@ namespace StrategyTest
             //Draw extra debug texts
             for (int i = 0; i < DebugTexts.Count; i++)
             {
-                _spriteBatch.DrawString(Arial, DebugTexts[i], new Vector2(0, 240 + i * 24), Color.Red, 0, default, 2f, SpriteEffects.None, 0.9f);
+                spriteBatch.DrawString(Arial, DebugTexts[i], new Vector2(0, 240 + i * 24), Color.Red, 0, default, 2f, SpriteEffects.None, 0.9f);
             }
             DebugTexts.Clear();
 
-            _spriteBatch.End();
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
@@ -157,10 +159,10 @@ namespace StrategyTest
             Rectangle rightLine = new Rectangle(rect.X + rect.Width, rect.Y, lineWidth, rect.Height + lineWidth);
             Rectangle leftLine = new Rectangle(rect.X - lineWidth, rect.Y, lineWidth, rect.Height + lineWidth);
 
-            _spriteBatch.Draw(GameWorld.Sprites["pixel"], topLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
-            _spriteBatch.Draw(GameWorld.Sprites["pixel"], bottomLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
-            _spriteBatch.Draw(GameWorld.Sprites["pixel"], rightLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
-            _spriteBatch.Draw(GameWorld.Sprites["pixel"], leftLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
+            spriteBatch.Draw(GameWorld.Sprites["pixel"], topLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
+            spriteBatch.Draw(GameWorld.Sprites["pixel"], bottomLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
+            spriteBatch.Draw(GameWorld.Sprites["pixel"], rightLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
+            spriteBatch.Draw(GameWorld.Sprites["pixel"], leftLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
         }
     }
 }

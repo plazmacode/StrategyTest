@@ -133,12 +133,16 @@ namespace StrategyTest
             }
         }
 
+        private static void YearlyTick()
+        {
+            MapManager.YearlyTick();
+        }
+
         /// <summary>
         /// Updates current day, month year to match correctly
         /// </summary>
         private static void UpdateDate()
         {
-            Years = 1 + TotalDays / 365;
             TotalDays++;
             currentDay++;
             if (currentDay > daysInMonthArray[currentMonth-1])
@@ -149,7 +153,9 @@ namespace StrategyTest
             }
             if (currentMonth > 12)
             {
+                years++;
                 currentMonth = 1;
+                YearlyTick();
             }
         }
 

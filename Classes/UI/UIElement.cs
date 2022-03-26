@@ -46,6 +46,7 @@ namespace StrategyTest
         public UIElement Parent { get => parent; set => parent = value; }
         public string Name { get => name; set => name = value; }
         public Vector2 Size { get => size; set => size = value; }
+        public Rectangle Rect { get => rect; set => rect = value; }
 
         /// <summary>
         /// Constructor for creating UI with texture. This is on the abstract class.
@@ -60,7 +61,7 @@ namespace StrategyTest
             this.layer = layer;
             this.Scale = 1;
 
-            rect = new Rectangle((int)position.X, (int)position.Y, (int)sprite.Width, (int)sprite.Height);
+            Rect = new Rectangle((int)position.X, (int)position.Y, (int)sprite.Width, (int)sprite.Height);
         }
         /// <summary>
         /// Constructor for creating UI with Rectangle. This is on the abstract class.
@@ -77,7 +78,7 @@ namespace StrategyTest
             this.layer = layer;
             this.Scale = 1;
 
-            rect = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
+            Rect = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
         }
         /// <summary>
         /// Abstract Update() Method. So that all UIElmenents can be updated with one call
@@ -93,7 +94,7 @@ namespace StrategyTest
             if (parent != null)
             {
                 this.position = parent.position + this.position;
-                rect = new Rectangle((int)position.X, (int)position.Y, (int)Size.X, (int)Size.Y);
+                Rect = new Rectangle((int)position.X, (int)position.Y, (int)Size.X, (int)Size.Y);
             }
         }
 

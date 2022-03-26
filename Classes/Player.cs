@@ -59,9 +59,7 @@ namespace StrategyTest
         {
             foreach (Province province in OwnedProvinces.Values)
             {
-                Resources.SetStatistics();
-                Resources.AddResources(province);
-                province.Resources.Update();
+
             }
         }
 
@@ -78,6 +76,9 @@ namespace StrategyTest
         {
             foreach (Province province in ownedProvinces.Values)
             {
+                Resources.SetStatistics();
+                Resources.AddResources(province);
+                province.Resources.Update();
                 int x = TimeManager.TotalDays;
                 int y = province.Resources.Population;
                 province.Resources.PopulationPlot.AddData(new Vector2(x, y));

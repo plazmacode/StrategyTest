@@ -12,7 +12,7 @@ namespace StrategyTest
         private float cash;
         private int population;
         private int manpower;
-
+        
         public float Cash { get => cash; set => cash = value; }
         public int Population { get => population; set => population = value; }
 
