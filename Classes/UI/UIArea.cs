@@ -11,7 +11,6 @@ namespace StrategyTest
     {
         private Dictionary<string, UIElement> subUIElements = new Dictionary<string, UIElement>();
 
-
         public Rectangle Rect { get => rect; set => rect = value; }
         public Dictionary<string, UIElement> SubUIElements { get => subUIElements; set => subUIElements = value; }
 
@@ -57,7 +56,7 @@ namespace StrategyTest
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(GameWorld.Pixel, Rect, null, background, default, default, SpriteEffects.None, layer);
+            spriteBatch.Draw(GameWorld.Sprites["pixel"], Rect, null, background, default, default, SpriteEffects.None, layer);
             foreach (UIElement uiElement in SubUIElements.Values)
             {
                 uiElement.Draw(spriteBatch);

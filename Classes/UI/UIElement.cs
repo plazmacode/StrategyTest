@@ -45,6 +45,7 @@ namespace StrategyTest
         /// </summary>
         public UIElement Parent { get => parent; set => parent = value; }
         public string Name { get => name; set => name = value; }
+        public Vector2 Size { get => size; set => size = value; }
 
         /// <summary>
         /// Constructor for creating UI with texture. This is on the abstract class.
@@ -72,7 +73,7 @@ namespace StrategyTest
         {
             this.Position = position;
             this.Background = background;
-            this.size = size;
+            this.Size = size;
             this.layer = layer;
             this.Scale = 1;
 
@@ -92,7 +93,7 @@ namespace StrategyTest
             if (parent != null)
             {
                 this.position = parent.position + this.position;
-                rect = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
+                rect = new Rectangle((int)position.X, (int)position.Y, (int)Size.X, (int)Size.Y);
             }
         }
 

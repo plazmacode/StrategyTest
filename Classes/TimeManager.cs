@@ -19,6 +19,7 @@ namespace StrategyTest
         private static int totalMonths;
         private static int currentMonth;
         private static int gameSpeed;
+        private static double timeStep = 500; //How much time between each timeStep
         private static double lastTimeStep; //The exact time since the previous increase in ingame time
 
         
@@ -68,7 +69,6 @@ namespace StrategyTest
         {
             //gamespeed is in a switch case so the values can be custom instead of linear or logarithmic
             //This might be subject to change
-            double timeStep = 150; //how often the time will advance in milliseconds
             double currentTime = GameWorld.GameTimeProp.TotalGameTime.TotalMilliseconds;
             switch (gameSpeed)
             {

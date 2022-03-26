@@ -3,22 +3,27 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace StrategyTest
 {
-    class UIButton : UIElement
+    /// <summary>
+    /// A button that shows a plot once it has been clicked
+    /// </summary>
+    class UIPlotButton : UIElement
     {
-        private string action;
         private string buttonText;
         private Vector2 buttonTextOffset;
         private Color textColor;
         private float textScale = 2;
+        private UIPlot uiPlot;
 
         public string ButtonText { get => buttonText; set => buttonText = value; }
         public Vector2 ButtonTextOffset { get => buttonTextOffset; set => buttonTextOffset = value; }
         public Color TextColor { get => textColor; set => textColor = value; }
         public float TextScale { get => textScale; set => textScale = value; }
+        public UIPlot UIPlotProp { get => uiPlot; set => uiPlot = value; }
 
         /// <summary>
         /// Creates a button with a texture
@@ -27,10 +32,10 @@ namespace StrategyTest
         /// <param name="sprite">Texture2D</param>
         /// <param name="layer">float between 0.0 and 1.0</param>
         /// <param name="action">string used in UIManager to determine code execution on button press</param>
-        public UIButton(Vector2 position, Texture2D sprite, float layer, string action) : base(position, sprite, layer)
+        public UIPlotButton(Vector2 position, Texture2D sprite, float layer, UIPlot plot) : base(position, sprite, layer)
         {
+            this.UIPlotProp = plot;
             textColor = Color.White;
-            this.action = action;
             Size = new Vector2(sprite.Width, sprite.Height);
         }
 
@@ -42,10 +47,10 @@ namespace StrategyTest
         /// <param name="background">Color of rectangle</param>
         /// <param name="layer">float between 0.0 and 1.0</param>
         /// <param name="action">string used in UIManager to determine code execution on button press</param>
-        public UIButton(Vector2 position, Vector2 size, Color background, float layer, string action) : base(position, size, background, layer)
+        public UIPlotButton(Vector2 position, Vector2 size, Color background, float layer, UIPlot plot) : base(position, size, background, layer)
         {
+            this.UIPlotProp = plot;
             textColor = Color.White;
-            this.action = action;
         }
 
         /// <summary>
@@ -66,11 +71,18 @@ namespace StrategyTest
             {
                 OnClick();
             }
+            uiPlot.Update();
         }
 
         private void OnClick()
         {
-            UIManager.ButtonAction(action);
+            if (UIPlotProp.IsShown)
+            {
+                UIPlotProp.IsShown = false;
+            } else
+            {
+                UIPlotProp.IsShown = true;
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -87,6 +99,10 @@ namespace StrategyTest
             {
                 Vector2 buttonTextPosition = new Vector2(position.X + (Size.X * scale) / 2 - GameWorld.Arial.MeasureString(ButtonText).X * TextScale / 2, position.Y + GameWorld.Arial.MeasureString(ButtonText).Y / 2);
                 spriteBatch.DrawString(GameWorld.Arial, ButtonText, buttonTextPosition + ButtonTextOffset, TextColor, 0, default, TextScale, SpriteEffects.None, 0.95f);
+            }
+            if (UIPlotProp.IsShown)
+            {
+                UIPlotProp.Draw(spriteBatch);
             }
         }
     }

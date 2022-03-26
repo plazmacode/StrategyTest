@@ -15,6 +15,7 @@ namespace StrategyTest
         private static Texture2D pixel;
         private static SpriteFont arial;
         private static GameTime gameTime;
+        private static Dictionary<string, Texture2D> sprites = new Dictionary<string, Texture2D>();
 
         private static MouseState mouseState;
         private static MouseState oldMouseState;
@@ -43,6 +44,7 @@ namespace StrategyTest
         public static MouseState MouseStateProp { get => mouseState; set => mouseState = value; }
         public static MouseState OldMouseState { get => oldMouseState; set => oldMouseState = value; }
         public static float ZoomScale { get => zoomScale; set => zoomScale = value; }
+        public static Dictionary<string, Texture2D> Sprites { get => sprites; set => sprites = value; }
 
         public GameWorld()
         {
@@ -68,7 +70,10 @@ namespace StrategyTest
         {
             CurrentGameState = GameState.Play;
             Arial = Content.Load<SpriteFont>("arial");
-            pixel = Content.Load<Texture2D>("pixel");
+
+            Sprites.Add("pixel", Content.Load<Texture2D>("pixel"));
+            Sprites.Add("plot", Content.Load<Texture2D>("plot"));
+
             cameraPosition = Vector2.Zero;
             zoomScale = 1f;
 
@@ -152,10 +157,10 @@ namespace StrategyTest
             Rectangle rightLine = new Rectangle(rect.X + rect.Width, rect.Y, lineWidth, rect.Height + lineWidth);
             Rectangle leftLine = new Rectangle(rect.X - lineWidth, rect.Y, lineWidth, rect.Height + lineWidth);
 
-            _spriteBatch.Draw(pixel, topLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
-            _spriteBatch.Draw(pixel, bottomLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
-            _spriteBatch.Draw(pixel, rightLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
-            _spriteBatch.Draw(pixel, leftLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
+            _spriteBatch.Draw(GameWorld.Sprites["pixel"], topLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
+            _spriteBatch.Draw(GameWorld.Sprites["pixel"], bottomLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
+            _spriteBatch.Draw(GameWorld.Sprites["pixel"], rightLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
+            _spriteBatch.Draw(GameWorld.Sprites["pixel"], leftLine, null, color, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
         }
     }
 }

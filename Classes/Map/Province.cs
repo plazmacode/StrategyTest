@@ -54,7 +54,7 @@ namespace StrategyTest
             this.Position = position;
             borderThickness = 3;
             layer = 0.3f;
-            sprite = GameWorld.Pixel;
+            sprite = GameWorld.Sprites["pixel"];
             size = provinceSize;
             edgeColor = Color.Black;
             provinceColor = Color.White;
